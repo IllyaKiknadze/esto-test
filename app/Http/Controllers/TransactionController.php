@@ -53,24 +53,15 @@ class TransactionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param TransactionCreateRequest $request
-     * @return JsonResponse
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(TransactionCreateRequest $request)
     {
         if ($transaction = $this->transactionService->createTransaction($request->all())) {
-            return response()->json([
-                'status'      => 'success',
-                'message'     => 'Transaction created successfully',
-                'transaction' => TransactionResource::make(
-                    Transaction::with(['user', 'type'])->find($transaction->id)
-                )
-            ], 200);
+            return redirect(route('transactions.index'));
         }
 
-        return response()->json([
-            'status'  => 'fail',
-            'message' => 'Transaction wasn\'t created',
-        ], 400);
+        return redirect()->back()->withInput()->withErrors(['message' => 'Can\'t create transaction. Something went wrong']);
     }
 
     /**

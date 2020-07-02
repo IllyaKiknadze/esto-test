@@ -20,7 +20,7 @@ Route::prefix('users')->group(function () {
 
     Route::prefix('transactions')->group(function () {
         Route::post('/', 'TransactionController@store')->name('transactions.store');
-        Route::get('/', 'TransactionController@index')->middleware('auth')->name('transactions.get');
+        Route::get('/', 'TransactionController@index')->middleware('auth')->name('transactions.index');
         Route::get('create', 'TransactionController@create')->middleware('auth')->name('transactions.create');
         Route::get('{transaction}', 'TransactionController@show')->name('transactions.show');
     });
