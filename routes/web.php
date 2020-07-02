@@ -17,10 +17,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('users', 'UserController');
+Route::post('users', 'UserController@store');
+Route::get('users', 'UserController@index');
 
-Auth::routes(['register' => false]);
+Route::post('transactions', 'TransactionController@store');
+Route::get('transactions', 'TransactionController@index');
+Route::get('transactions/create', 'TransactionController@create')->middleware('auth');
+Route::get('transactions/{transaction}', 'TransactionController@show');
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\TransactionTypes;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -14,10 +15,16 @@ class TransactionTest extends TestCase
      */
     public function testCreate()
     {
-        $response = $this->post('/transaction', [
-            'type_id' => TransactionType::first()->id,
-            'user_id' => User::first()->id,
+        auth()->loginUsingId(1);
+
+        $this->post('/transactions', [
+            'type_id' => TransactionTypes::inRandomOrder()->first()->id,
             'amount'  => $this->faker->numberBetween(100, 1000)
-        ]);
+        ])->assertResponseOk()
+            ->seeJsonStructure([
+                'status',
+                'message',
+                'transaction'
+            ]);
     }
 }

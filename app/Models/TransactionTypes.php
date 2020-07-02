@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\TransactionTypes newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\TransactionTypes query()
  * @mixin \Eloquent
+ * @property int $id
+ * @property string $title
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\TransactionTypes whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\TransactionTypes whereTitle($value)
  */
 class TransactionTypes extends Model
 {
