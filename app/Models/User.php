@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
 
@@ -39,7 +40,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','permissions',
+        'name', 'email', 'password', 'permissions',
     ];
 
     /**
@@ -59,4 +60,9 @@ class User extends Authenticatable
     protected $dates = [
         'created_at', 'updated_at'
     ];
+
+    public function transactions(): HasMany
+    {
+        $this->hasMany(Transaction::class);
+    }
 }

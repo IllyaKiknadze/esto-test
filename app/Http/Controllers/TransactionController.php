@@ -45,7 +45,9 @@ class TransactionController extends Controller
             return response()->json([
                 'status'      => 'success',
                 'message'     => 'Transaction created successfully',
-                'transaction' => TransactionCreateResource::make($transaction)
+                'transaction' => TransactionCreateResource::make(
+                    Transaction::with(['user', 'type'])->find($transaction->id)
+                )
             ], 200);
         }
 

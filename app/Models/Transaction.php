@@ -2,7 +2,12 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Transaction
@@ -11,21 +16,38 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $user_id
  * @property int $type_id
  * @property string $amount
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction whereTypeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Transaction whereUserId($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|Transaction newModelQuery()
+ * @method static Builder|Transaction newQuery()
+ * @method static Builder|Transaction query()
+ * @method static Builder|Transaction whereAmount($value)
+ * @method static Builder|Transaction whereCreatedAt($value)
+ * @method static Builder|Transaction whereId($value)
+ * @method static Builder|Transaction whereTypeId($value)
+ * @method static Builder|Transaction whereUpdatedAt($value)
+ * @method static Builder|Transaction whereUserId($value)
+ * @mixin Eloquent
  */
 class Transaction extends Model
 {
     protected $fillable = ['type_id', 'user_id', 'amount'];
     protected $dates = ['created_at', 'updated_at'];
+
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(TransactionTypes::class);
+    }
 }
+
