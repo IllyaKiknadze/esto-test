@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TransactionCreateRequest;
-use App\Http\Resources\TransactionCreateResource;
+use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use App\Models\TransactionTypes;
 use App\Services\TransactionService;
@@ -24,13 +24,29 @@ class TransactionController extends Controller
     }
 
     /**
+     * @return Factory|View|void
+     */
+    public function index()
+    {
+        if ($transactions = $this->transactionService->getUserTransactions(auth()->id())) {
+            return view('transactions.list', [
+                'transactions' => TransactionResource::collection($transactions)
+            ]);
+        }
+
+        return abort(404);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return Factory|View
      */
     public function create()
     {
-        return view('transactions.create_transaction', ['types' => TransactionTypes::get()]);
+        return view('transactions.create_transaction', [
+            'types' => TransactionTypes::get()->pluck('title', 'id')
+        ]);
     }
 
     /**
@@ -45,7 +61,7 @@ class TransactionController extends Controller
             return response()->json([
                 'status'      => 'success',
                 'message'     => 'Transaction created successfully',
-                'transaction' => TransactionCreateResource::make(
+                'transaction' => TransactionResource::make(
                     Transaction::with(['user', 'type'])->find($transaction->id)
                 )
             ], 200);
@@ -61,14 +77,10 @@ class TransactionController extends Controller
      * Display the specified resource.
      *
      * @param Transaction $transaction
-     * @return JsonResponse
+     * @return Factory|View
      */
     public function show(Transaction $transaction)
     {
-        return response()->json([
-            'status'      => 'success',
-            'message'     => 'Transaction created successfully',
-            'transaction' => TransactionCreateResource::make($transaction)
-        ], 200);
+        return view('transactions.single', ['transaction' => TransactionResource::make($transaction)]);
     }
 }

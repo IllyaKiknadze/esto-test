@@ -12,20 +12,20 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/', function () {
-    return view('welcome');
+Route::prefix('users')->group(function () {
+    Route::post('/', 'UserController@store')->name('users.store');
+    Route::get('/', 'UserController@index')->name('users.get');
+
+    Route::prefix('transactions')->group(function () {
+        Route::post('/', 'TransactionController@store')->name('transactions.store');
+        Route::get('/', 'TransactionController@index')->middleware('auth')->name('transactions.get');
+        Route::get('create', 'TransactionController@create')->middleware('auth')->name('transactions.create');
+        Route::get('{transaction}', 'TransactionController@show')->name('transactions.show');
+    });
 });
 
-Route::post('users', 'UserController@store');
-Route::get('users', 'UserController@index');
-
-Route::post('transactions', 'TransactionController@store');
-Route::get('transactions', 'TransactionController@index');
-Route::get('transactions/create', 'TransactionController@create')->middleware('auth');
-Route::get('transactions/{transaction}', 'TransactionController@show');
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
