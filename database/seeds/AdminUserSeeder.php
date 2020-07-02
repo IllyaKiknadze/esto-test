@@ -13,6 +13,7 @@ class AdminUserSeeder extends Seeder
      */
     public function run()
     {
+
         User::create([
             'name'      => 'admin',
             'email'      => 'admin@gmail.com',

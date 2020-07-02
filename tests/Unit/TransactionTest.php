@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Tests\TestCase;
 
 class TransactionTest extends TestCase
@@ -11,8 +12,12 @@ class TransactionTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function testCreate()
     {
-        $response = $this->get('/');
+        $response = $this->post('/transaction', [
+            'type_id' => TransactionType::first()->id,
+            'user_id' => User::first()->id,
+            'amount'  => $this->faker->numberBetween(100, 1000)
+        ]);
     }
 }
