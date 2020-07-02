@@ -15,11 +15,22 @@ class UserTest extends TestCase
      */
     public function testCreate()
     {
-        \Auth::login(User::find(1));
+        auth()->loginUsingId(1);
 
         $this->post('/users', [
-            'email'    => 'admin2@gmail.com',
-            'password' => '123123123'
-        ])->assertResponseOk()->assertJson('{"status":1,"message":"User created successfully"}');
+            'email'       => 'admin2@gmail.com',
+            'password'    => '123123123',
+            'permissions' => 1,
+            'name'        => 'admin2'
+        ])->assertResponseOk()
+            ->seeJsonStructure([
+                'status',
+                'message',
+                'user' => [
+                    'email',
+                    'name',
+                    'permissions'
+                ]
+            ]);
     }
 }
