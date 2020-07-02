@@ -36,6 +36,6 @@ class TransactionTest extends TestCase
         auth()->loginUsingId(1);
 
         $this->get('users/transactions')
-            ->see(auth()->user()->name . ' transactions');
+            ->see(auth()->user()->name . ' transactions')->see('1');
     }
 }

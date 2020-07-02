@@ -19,7 +19,7 @@
                     <th scope="row">{{$user->id}}</th>
                     <td>{{$user->name}}</td>
                     <td>{{$user->email}}</td>
-                    <td>{{$user->transactions->sum('amount')}}</td>
+                    <td>{{$user->transactions->where('type.title','debit')->sum('amount')}}</td>
                 </tr>
             @endforeach
             </tbody>
