@@ -6,6 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreateUserRequest extends FormRequest
 {
+    public function response(array $errors)
+    {
+        return \Redirect::back()->withErrors($errors)->withInput(request()->except('password'));
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,10 +29,10 @@ class CreateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'email'      => 'email|required|unique:users',
-            'password'   => 'required|min:8',
+            'email'       => 'email|required|unique:users',
+            'password'    => 'required|min:8',
             'permissions' => 'boolean|nullable',
-            'name'       => 'required|alpha_dash'
+            'name'        => 'required|alpha_dash|unique:users'
         ];
     }
 }

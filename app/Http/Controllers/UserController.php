@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
+use App\Http\Resources\UserResource;
 use App\Services\UserService;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
@@ -23,94 +26,56 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return JsonResponse
+     * @return Factory|View|void
      */
     public function index()
     {
-        if ($users = $this->userService->getLatestUsers()) {
-            return response()->json(['status' => 'success', 'message' => 'Latest users', 'users' => $users], 200);
+        if ($users = $this->userService->getUsers()) {
+            return view('user.index', ['users' => $users]);
         }
 
-        return response()->json(['status' => 'fail', 'message' => 'Can\'t get users'], 400);
+        return abort(404);
+    }
+
+    public function latest()
+    {
+        if ($users = $this->userService->getLatestUsers()) {
+            return view('users.index', [
+                'users' => UserResource::collection($users)
+            ]);
+        }
+
+        return abort(404);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return Factory|View
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param CreateUserRequest $request
-     * @return JsonResponse
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
      */
     public function store(CreateUserRequest $request)
     {
         if (!auth()->user() || (auth()->user() && !auth()->user()->permissions)) {
-            return response()->json(['status' => 'fail', 'message' => 'Only for admin'], 400);
+            return redirect('/');
         }
 
         $user = $this->userService->createUser($request->all());
 
         if ($user) {
-            return response()->json([
-                'status'  => 'success',
-                'message' => 'User created successfully',
-                'user'    => $user
-            ], 200);
+            return redirect(route('users.latest'));
         }
 
-        return response()->json(['status' => 'fail', 'message' => 'Something went wrong'], 400);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->back()->withErrors(['message' => 'Something went wrong'])->withInput();
     }
 }

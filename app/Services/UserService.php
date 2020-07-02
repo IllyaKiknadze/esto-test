@@ -6,8 +6,10 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -24,14 +26,32 @@ class UserService
      */
     public function createUser(array $userData): User
     {
-        return $this->user->newQuery()->create($userData);
+        $user = new User();
+        $user->password = Hash::make($userData['password']);
+        $user->email = $userData['email'];
+        $user->name = $userData['name'];
+        $user->permissions = $userData['permissions'] ?? false;
+        $user->save();
+
+        return $user;
     }
 
     /**
      * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Builder[]|Collection
      */
-    public function getLatestUsers() : Collection
+    public function getUsers(): Collection
     {
-        return $this->user->newQuery()->orderByDesc('created_at')->get();
+        return $this->user->newQuery()->get();
+    }
+
+    /**
+     * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Builder[]|Collection
+     */
+    public function getLatestUsers(): Collection
+    {
+        return $this->user->newQuery()
+            ->orderByDesc('created_at')
+            ->with('transactions')
+            ->take(10)->get();
     }
 }

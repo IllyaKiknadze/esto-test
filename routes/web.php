@@ -17,6 +17,8 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::prefix('users')->group(function () {
     Route::post('/', 'UserController@store')->name('users.store');
     Route::get('/', 'UserController@index')->name('users.get');
+    Route::get('create', 'UserController@create')->middleware('permissions')->name('users.create');
+    Route::get('latest', 'UserController@latest')->name('users.latest');
 
     Route::prefix('transactions')->group(function () {
         Route::post('/', 'TransactionController@store')->name('transactions.store');

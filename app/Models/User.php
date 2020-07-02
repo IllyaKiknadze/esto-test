@@ -61,8 +61,11 @@ class User extends Authenticatable
         'created_at', 'updated_at'
     ];
 
+    /**
+     * @return HasMany
+     */
     public function transactions(): HasMany
     {
-        $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class);
     }
 }

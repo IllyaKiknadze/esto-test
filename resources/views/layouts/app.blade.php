@@ -58,6 +58,14 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('users.latest') }}">
+                                    {{ __('users.latest') }}
+                                </a>
+
+                                <a class="dropdown-item" href="{{ route('users.create') }}">
+                                    {{ __('users.create') }}
+                                </a>
+
                                 <a class="dropdown-item" href="{{ route('transactions.index') }}">
                                     {{ __('transactions.list') }}
                                 </a>

@@ -22,16 +22,7 @@ class UserTest extends TestCase
             'password'    => '123123123',
             'permissions' => 1,
             'name'        => 'admin2'
-        ])->assertResponseOk()
-            ->seeJsonStructure([
-                'status',
-                'message',
-                'user' => [
-                    'email',
-                    'name',
-                    'permissions'
-                ]
-            ]);
+        ])->assertRedirectedTo('/users/latest');
     }
 
     public function testGetUsers()
