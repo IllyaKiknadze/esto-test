@@ -7,8 +7,10 @@ use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -31,7 +33,7 @@ class UserController extends Controller
     public function index()
     {
         if ($users = $this->userService->getUsers()) {
-            return view('user.index', ['users' => $users]);
+            return view('users.index', ['users' => $users]);
         }
 
         return abort(404);
@@ -62,7 +64,7 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CreateUserRequest $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|void
+     * @return RedirectResponse|Redirector|void
      */
     public function store(CreateUserRequest $request)
     {

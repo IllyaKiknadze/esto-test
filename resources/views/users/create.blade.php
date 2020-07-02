@@ -13,7 +13,7 @@
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email" required
+                <input type="text" name="email" id="email" class="form-control" placeholder="Enter Email" required
                        value="{{\Request::old('email')}}">
             </div>
             <div class="form-group">
