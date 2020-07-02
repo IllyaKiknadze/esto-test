@@ -6,6 +6,8 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Collection;
 
 class UserService
 {
@@ -20,8 +22,16 @@ class UserService
      * @param array $userData
      * @return User|Model
      */
-    public function createUser(array $userData)
+    public function createUser(array $userData): User
     {
-        return $this->user->create($userData);
+        return $this->user->newQuery()->create($userData);
+    }
+
+    /**
+     * @return User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Builder[]|Collection
+     */
+    public function getLatestUsers() : Collection
+    {
+        return $this->user->newQuery()->orderByDesc('created_at')->get();
     }
 }

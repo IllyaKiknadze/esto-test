@@ -10,7 +10,10 @@ use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
-    public $userService;
+    /**
+     * @var UserService $userService
+     */
+    public UserService $userService;
 
     public function __construct(UserService $userService)
     {
@@ -20,11 +23,15 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function index()
     {
-        //
+        if ($users = $this->userService->getLatestUsers()) {
+            return response()->json(['status' => 'success', 'message' => 'Latest users', 'users' => $users], 200);
+        }
+
+        return response()->json(['status' => 'fail', 'message' => 'Can\'t get users'], 400);
     }
 
     /**
@@ -46,7 +53,7 @@ class UserController extends Controller
     public function store(CreateUserRequest $request)
     {
         if (!auth()->user() || (auth()->user() && !auth()->user()->permissions)) {
-            return response()->json(['status' => 'fail', 'message' => 'Only for admin'], 500);
+            return response()->json(['status' => 'fail', 'message' => 'Only for admin'], 400);
         }
 
         $user = $this->userService->createUser($request->all());
@@ -59,7 +66,7 @@ class UserController extends Controller
             ], 200);
         }
 
-        return response()->json(['status' => 'fail', 'message' => 'Something went wrong'], 500);
+        return response()->json(['status' => 'fail', 'message' => 'Something went wrong'], 400);
     }
 
     /**

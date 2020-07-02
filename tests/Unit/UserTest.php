@@ -33,4 +33,20 @@ class UserTest extends TestCase
                 ]
             ]);
     }
+
+    public function testGetUsers()
+    {
+        $this->get('/users')->assertResponseOk()
+            ->seeJsonStructure([
+                'status', 'message',
+                'users' =>
+                    ['*' =>
+                         [
+                             'email',
+                             'name',
+                             'permissions'
+                         ]
+                    ]
+            ]);
+    }
 }
