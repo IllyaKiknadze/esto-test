@@ -16,8 +16,9 @@
                 <th scope="row">{{user.id}}</th>
                 <td>{{user.name}}</td>
                 <td>{{user.email}}</td>
-                <td>{{user.debit_amount ? user.debit_amount : 0 }}</td>
+                <td>{{user.debit_amount}}</td>
             </tr>
+
             </tbody>
         </table>
 

@@ -39,7 +39,6 @@ class UserController extends Controller
     public function latest()
     {
         if ($users = $this->userService->getLatestUsers()) {
-            dd($users->toArray());
             return view('users.index', [
                 'users' => UserResource::collection($users)
             ]);

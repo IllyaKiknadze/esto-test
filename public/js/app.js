@@ -37570,9 +37570,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(user.email))]),
                 _vm._v(" "),
-                _c("td", [
-                  _vm._v(_vm._s(user.debit_amount ? user.debit_amount : 0))
-                ])
+                _c("td", [_vm._v(_vm._s(user.debit_amount))])
               ])
             }),
             0
