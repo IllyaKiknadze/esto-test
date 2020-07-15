@@ -1,17 +1,17 @@
 export default {
-    name: "userCreate",
-    props: {
-        authUser: {
-            type: Object,
-            required: true
-        },
-        users: {
-            type: Array,
-            required: true
-        },
-        routeCreateUser: {
-            type: String,
-            required: true
+    name: "user-create",
+    data() {
+        return {
+            user: {
+                email: null,
+                name: null,
+                password: null
+            }
         }
     },
+    methods:{
+        createUser(){
+
+        }
+    }
 }
