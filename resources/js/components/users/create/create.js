@@ -1,5 +1,5 @@
 export default {
-    name: "latest",
+    name: "userCreate",
     props: {
         authUser: {
             type: Object,
