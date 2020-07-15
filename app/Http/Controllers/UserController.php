@@ -6,10 +6,7 @@ use App\Http\Requests\CreateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
@@ -42,6 +39,7 @@ class UserController extends Controller
     public function latest()
     {
         if ($users = $this->userService->getLatestUsers()) {
+            dd($users->toArray());
             return view('users.index', [
                 'users' => UserResource::collection($users)
             ]);

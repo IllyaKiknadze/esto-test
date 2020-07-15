@@ -15,6 +15,7 @@ class UserTest extends TestCase
     public function testCreate()
     {
         auth()->loginUsingId(1);
+
         $this->post('/users', [
             'email'       => 'admin2@gmail.com',
             'password'    => '123123123',

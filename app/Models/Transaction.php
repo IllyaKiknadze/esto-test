@@ -34,6 +34,8 @@ class Transaction extends Model
     protected $fillable = ['type_id', 'user_id', 'amount'];
     protected $dates = ['created_at', 'updated_at'];
 
+    const TYPE_DEBIT_ID = 1;
+
     /**
      * @return BelongsTo
      */

@@ -4,11 +4,13 @@
 namespace App\Services;
 
 
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
@@ -51,6 +53,11 @@ class UserService
     {
         return $this->user->newQuery()
             ->orderByDesc('created_at')
+            ->addSelect(['debit_amount' => Transaction::selectRaw('sum(amount) as total')
+                ->where('type_id',Transaction::TYPE_DEBIT_ID)
+                ->whereColumn('user_id', 'users.id')
+                ->groupBy('user_id')
+            ])
             ->with('transactions')
             ->take(10)->get();
     }
